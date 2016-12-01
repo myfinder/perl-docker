@@ -1,0 +1,35 @@
+{
+    "builders": [{
+        "type": "docker",
+        "image": "alpine:3.4",
+        "export_path": "packer_to_docker.tar",
+        "run_command": ["-d","-i", "-t", "{{.Image}}", "/bin/sh"]
+    }],
+    "provisioners": [{
+        "type": "shell",
+        "inline": [
+            "apk update && apk add gcc g++ make git patch perl perl-dev curl ca-certificates wget && update-ca-certificates && rm -fr /var/cache/apk/*",
+            "curl -sL https://git.io/cpm > /usr/bin/cpm && chmod +x /usr/bin/cpm",
+            "cd /usr && cpm install Carton",
+            "export PERL5LIB=/usr/local/lib/perl5",
+            "git clone https://github.com/myfinder/perl-docker.git /opt/app",
+            "cd /opt/app && carton install"
+        ]
+    }],
+    "post-processors": [
+        [
+            {
+                "type": "docker-import",
+                "repository": "perldockertest-microsoft.azurecr.io/perl-docker",
+                "tag": "0.2"
+            },
+            {
+                "type": "docker-push",
+                "login": "true",
+                "login_server": "https://perldockertest-microsoft.azurecr.io",
+                "login_username": "perldockertest",
+                "login_password": "n//+=iT/elB+szl2n/V7/8iPk7TjAp1A"
+            }
+        ]
+    ]
+}
