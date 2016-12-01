@@ -21,7 +21,7 @@
             {
                 "type": "docker-import",
                 "repository": "perldockertest-microsoft.azurecr.io/perl-docker",
-                "tag": "0.2"
+                "tag": "0.3"
             },
             {
                 "type": "docker-push",
