@@ -7,6 +7,6 @@ my $app = sub {
     return [
         200,
         [ 'Content-Type' => 'text/html'],
-        [ 'Hello PSGI world! v0.3']
+        [ 'Hello PSGI world! v0.4']
     ];
 }

@@ -3,8 +3,10 @@
         "type": "docker",
         "image": "alpine:3.4",
         "export_path": "packer_to_docker.tar",
+        "changes": ["ENV PERL5LIB=/usr/local/lib/perl5", "EXPOSE 5000", "CMD /opt/app/startup.sh", "WORKDIR /opt/app"],
         "run_command": ["-d","-i", "-t", "{{.Image}}", "/bin/sh"]
     }],
+
     "provisioners": [{
         "type": "shell",
         "inline": [
@@ -16,12 +18,13 @@
             "cd /opt/app && carton install"
         ]
     }],
+
     "post-processors": [
         [
             {
                 "type": "docker-import",
                 "repository": "perldockertest-microsoft.azurecr.io/perl-docker",
-                "tag": "0.3"
+                "tag": "0.4"
             },
             {
                 "type": "docker-push",
